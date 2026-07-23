@@ -1,14 +1,26 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MovieShopMVC.Models;
+using ApplicationCore.Contracts.Services;
 
 namespace MovieShopMVC.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly ILogger<HomeController> _logger;
+    private IMovieService _movieService;
+
+    public HomeController(ILogger<HomeController> logger, IMovieService movieService)
+    {
+        _logger = logger;
+        _movieService = movieService;
+    }
     public IActionResult Index()
     {
-        return View();
+        ViewBag.Title = "MovieShop Home Page Title";
+
+        var movies = _movieService.Get30HighestGrossingMovies();
+        return View(movies);
     }
 
     public IActionResult Privacy()

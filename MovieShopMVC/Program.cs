@@ -1,7 +1,14 @@
+using Infrastructure.Services;
+using ApplicationCore.Contracts.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register the MovieService with the DI container
+builder.Services.AddScoped<IMovieService, MovieServiceUnitTests>();
+
 
 var app = builder.Build();
 
