@@ -25,5 +25,6 @@ public class Movie
     public string? UpdatedBy { get; set; }
     public string? CreatedBy { get; set; }
     public decimal? Rating { get; set; }
+    public ICollection<Genre> Genres { get; set; } 
 
 }

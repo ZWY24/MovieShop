@@ -8,6 +8,7 @@ public class MovieShopDbContext : DbContext
 {
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Movie> Movies { get; set; }
+    public DbSet<Trailer> Trailers { get; set; }
 
     public MovieShopDbContext(DbContextOptions<MovieShopDbContext> options) : base(options)
     {
@@ -16,6 +17,7 @@ public class MovieShopDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Movie>(ConfigureMovie);
+        modelBuilder.Entity<Trailer>(ConfigureTrailer);
     }
 
     private void ConfigureMovie(EntityTypeBuilder<Movie> builder)
@@ -35,4 +37,11 @@ public class MovieShopDbContext : DbContext
         builder.Property(m => m.CreatedDate).HasDefaultValueSql("getdate()");
         builder.Ignore(m => m.Rating);
     }
+    private void ConfigureTrailer(EntityTypeBuilder<Trailer> builder)
+{
+    builder.ToTable("Trailer");
+    builder.HasKey(t => t.Id);
+    builder.Property(t => t.Name).HasMaxLength(2084);
+    builder.Property(t => t.TrailerUrl).HasMaxLength(2084);
+}
 }
