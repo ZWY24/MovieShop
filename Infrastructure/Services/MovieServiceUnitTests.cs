@@ -32,4 +32,14 @@ public class MovieServiceUnitTests : IMovieService
 
         return movies;
     }
+
+    public MovieDetailModel GetMovieDetails(int id)
+    {
+        return new MovieDetailModel
+        {
+           Id = id,
+            Title = "Fake Movie",
+            Overview = "This is fake data for testing."
+        };
+    }
 }
