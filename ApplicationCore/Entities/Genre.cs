@@ -10,7 +10,7 @@ public class Genre
 
     [Required]
     [MaxLength(64)]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
-    public ICollection<Movie> Movies { get; set; }
+    public ICollection<MovieGenre> MoviesOfGenre { get; set; } = new List<MovieGenre>();
 }

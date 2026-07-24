@@ -25,6 +25,12 @@ public class Movie
     public string? UpdatedBy { get; set; }
     public string? CreatedBy { get; set; }
     public decimal? Rating { get; set; }
-    public ICollection<Genre> Genres { get; set; } 
+    public ICollection<Trailer> Trailers { get; set; } = new List<Trailer>();
+    public ICollection<MovieGenre> GenresOfMovie { get; set; } = new List<MovieGenre>();
+    public ICollection<MovieCast> MovieCasts { get; set; } = new List<MovieCast>();
+    public ICollection<MovieCrew> MovieCrews { get; set; } = new List<MovieCrew>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
+    public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 
 }

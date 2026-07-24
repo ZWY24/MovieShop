@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovieShopDbContext))]
-    [Migration("20260723225211_CreatingMovieGenreJunctionTable")]
+    [Migration("20260723230402_CreatingMovieGenreJunctionTable")]
     partial class CreatingMovieGenreJunctionTable
     {
         /// <inheritdoc />
@@ -123,6 +123,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("Movie", (string)null);
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.MovieGenre", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MovieId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("MovieGenre", (string)null);
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.Trailer", b =>
                 {
                     b.Property<int>("Id")
@@ -151,25 +166,29 @@ namespace Infrastructure.Migrations
                     b.ToTable("Trailer", (string)null);
                 });
 
-            modelBuilder.Entity("GenreMovie", b =>
+            modelBuilder.Entity("ApplicationCore.Entities.MovieGenre", b =>
                 {
-                    b.Property<int>("GenresId")
-                        .HasColumnType("int");
+                    b.HasOne("ApplicationCore.Entities.Genre", "Genre")
+                        .WithMany("MoviesOfGenre")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("MoviesId")
-                        .HasColumnType("int");
+                    b.HasOne("ApplicationCore.Entities.Movie", "Movie")
+                        .WithMany("GenresOfMovie")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("GenresId", "MoviesId");
+                    b.Navigation("Genre");
 
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("GenreMovie");
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Trailer", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("Trailers")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -177,19 +196,16 @@ namespace Infrastructure.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("GenreMovie", b =>
+            modelBuilder.Entity("ApplicationCore.Entities.Genre", b =>
                 {
-                    b.HasOne("ApplicationCore.Entities.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("MoviesOfGenre");
+                });
 
-                    b.HasOne("ApplicationCore.Entities.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("ApplicationCore.Entities.Movie", b =>
+                {
+                    b.Navigation("GenresOfMovie");
+
+                    b.Navigation("Trailers");
                 });
 #pragma warning restore 612, 618
         }
